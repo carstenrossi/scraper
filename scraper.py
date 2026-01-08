@@ -242,7 +242,7 @@ def get_page_title(soup: BeautifulSoup) -> str:
 
 
 def generate_page_markdown(url: str, title: str, content: str) -> str:
-    """Generiert Markdown für eine einzelne Seite (ohne Link-Liste)."""
+    """Generiert Markdown für eine einzelne Seite (für kombinierte Datei)."""
     lines = [
         f"## 📄 {title}",
         f"**URL:** {url}",
@@ -253,6 +253,42 @@ def generate_page_markdown(url: str, title: str, content: str) -> str:
         "",
     ]
     return "\n".join(lines)
+
+
+def generate_single_file_markdown(url: str, title: str, content: str, links: list[dict] = None) -> str:
+    """Generiert vollständiges Markdown für eine einzelne Seite (separate Datei)."""
+    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    lines = [
+        "---",
+        f"url: {url}",
+        f"scraped_at: {now}",
+        f"title: {title}",
+        "---",
+        "",
+        f"# {title}",
+        "",
+        content,
+        "",
+    ]
+    
+    if links:
+        lines.extend(["## Interne Links", ""])
+        for link in links:
+            lines.append(f"- [{link['text']}]({link['url']})")
+    
+    return "\n".join(lines)
+
+
+def page_url_to_filename(url: str) -> str:
+    """Generiert einen sauberen Dateinamen aus einer Seiten-URL."""
+    parsed = urlparse(url)
+    # Pfad verwenden, oder 'index' für Startseite
+    path = parsed.path.strip('/') or 'index'
+    name = re.sub(r"[^\w\-]", "_", path)
+    name = re.sub(r"_+", "_", name)
+    name = name.strip("_") or "index"
+    return f"{name}.md"
 
 
 def generate_combined_markdown(base_url: str, pages: list[dict], all_links: list[dict]) -> str:
@@ -475,6 +511,11 @@ Beispiele:
         help="Maximale Crawl-Tiefe (1 = nur direkte Links, 2 = zwei Ebenen, etc.)"
     )
     parser.add_argument(
+        "-s", "--separate",
+        action="store_true",
+        help="Jede Seite als separate Datei in eigenem Ordner speichern"
+    )
+    parser.add_argument(
         "-b", "--force-browser",
         action="store_true",
         help="Browser-Rendering erzwingen (für JS-lastige Seiten)"
@@ -508,6 +549,28 @@ Beispiele:
             if not pages:
                 print("❌ Keine Seiten gefunden!")
                 sys.exit(1)
+            
+            if args.separate:
+                # Separate Dateien in eigenem Ordner
+                parsed = urlparse(args.url)
+                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                folder_name = f"{parsed.netloc.replace('.', '_')}_{timestamp}"
+                output_dir = OUTPUT_DIR / folder_name
+                output_dir.mkdir(parents=True, exist_ok=True)
+                
+                for page in pages:
+                    page_markdown = generate_single_file_markdown(
+                        page['url'], 
+                        page['title'], 
+                        page['content']
+                    )
+                    page_filename = page_url_to_filename(page['url'])
+                    page_path = output_dir / page_filename
+                    page_path.write_text(page_markdown, encoding="utf-8")
+                
+                print(f"\n✅ Gespeichert: {output_dir}/")
+                print(f"📊 {len(pages)} Dateien erstellt")
+                return
             
             # Kombiniertes Markdown generieren
             markdown = generate_combined_markdown(args.url, pages, all_links)

@@ -69,6 +69,7 @@ python scraper.py https://example.com --crawl
 | `--crawl` | `-c` | Rekursives Crawling aller verlinkten Unterseiten |
 | `--max N` | `-m N` | Maximale Anzahl Seiten beim Crawlen (Standard: 50) |
 | `--depth N` | `-d N` | Maximale Crawl-Tiefe (1 = nur direkte Links, 2 = zwei Ebenen, etc.) |
+| `--separate` | `-s` | Jede Seite als separate Datei in eigenem Ordner speichern |
 | `--output FILE` | `-o FILE` | Ausgabedatei festlegen |
 | `--force-browser` | `-b` | Browser-Rendering erzwingen (für JS-lastige Seiten) |
 | `--verbose` | `-v` | Ausführliche Ausgabe |
@@ -89,6 +90,9 @@ python scraper.py https://example.com --crawl --depth 1
 
 # Maximal 2 Ebenen tief
 python scraper.py https://example.com --crawl --depth 2 --max 50
+
+# Separate Dateien pro Seite (statt einer großen Datei)
+python scraper.py https://example.com --crawl --separate
 
 # Browser erzwingen für React/Vue Apps
 python scraper.py https://spa-website.com --crawl --force-browser

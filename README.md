@@ -70,6 +70,8 @@ python scraper.py https://example.com --crawl
 | `--max N` | `-m N` | Maximale Anzahl Seiten beim Crawlen (Standard: 50) |
 | `--depth N` | `-d N` | Maximale Crawl-Tiefe (1 = nur direkte Links, 2 = zwei Ebenen, etc.) |
 | `--separate` | `-s` | Jede Seite als separate Datei in eigenem Ordner speichern |
+| `--prefix PATH` | `-p PATH` | Nur Links mit diesem Pfad-Prefix folgen (z.B. `/docs/api/`) |
+| `--expand-tabs` | `-t` | Alle Tab-Inhalte durch Klicken erfassen (langsamer) |
 | `--output FILE` | `-o FILE` | Ausgabedatei festlegen |
 | `--force-browser` | `-b` | Browser-Rendering erzwingen (für JS-lastige Seiten) |
 | `--verbose` | `-v` | Ausführliche Ausgabe |
@@ -93,6 +95,10 @@ python scraper.py https://example.com --crawl --depth 2 --max 50
 
 # Separate Dateien pro Seite (statt einer großen Datei)
 python scraper.py https://example.com --crawl --separate
+
+# Nur bestimmten Bereich einer Website crawlen (z.B. API-Docs)
+python scraper.py https://recraft.ai/docs/api-reference/getting-started \
+    --crawl --prefix /docs/api-reference/ --separate
 
 # Browser erzwingen für React/Vue Apps
 python scraper.py https://spa-website.com --crawl --force-browser

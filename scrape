@@ -1,0 +1,15 @@
+#!/bin/bash
+# Wrapper-Script für den Web Scraper
+# Aktiviert automatisch die virtuelle Umgebung
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/venv/bin/activate"
+
+if [ "$1" = "-i" ] || [ "$1" = "--interactive" ] || [ -z "$1" ]; then
+    # Interaktiver Modus
+    python "$SCRIPT_DIR/run.py"
+else
+    # CLI-Modus
+    python "$SCRIPT_DIR/scraper.py" "$@"
+fi
+

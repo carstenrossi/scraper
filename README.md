@@ -41,16 +41,33 @@ playwright install chromium
 
 ## Nutzung
 
-### Virtuelle Umgebung aktivieren
+### Schnellstart (ohne venv-Aktivierung)
 
 ```bash
 cd /path/to/scraper
+
+# Interaktiver Modus
+./scrape
+
+# CLI-Modus
+./scrape https://example.com --crawl
+```
+
+Das `scrape`-Script aktiviert die venv automatisch!
+
+### Alternative: Manuell mit venv
+
+```bash
 source venv/bin/activate
+python run.py           # Interaktiv
+python scraper.py URL   # CLI
 ```
 
 ### Interaktiver Modus (empfohlen für Einsteiger)
 
 ```bash
+./scrape
+# oder
 python run.py
 ```
 
@@ -190,6 +207,7 @@ scraper/
 ├── scraper_results/   # Ausgabe-Ordner für Markdown-Dateien
 │   ├── example_com_2026-01-08_14-00-24.md
 │   └── example_com_crawl_2026-01-08_14-00-37.md
+├── scrape             # Shell-Wrapper (aktiviert venv automatisch)
 ├── scraper.py         # Haupt-Skript (CLI)
 ├── run.py             # Interaktives Startscript
 ├── requirements.txt   # Python Dependencies

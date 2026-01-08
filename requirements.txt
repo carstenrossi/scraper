@@ -1,0 +1,5 @@
+# Web Scraper Dependencies
+httpx>=0.27.0          # Async HTTP client (schneller als requests)
+beautifulsoup4>=4.12.0 # HTML parsing
+lxml>=5.0.0            # Schneller HTML/XML parser für BeautifulSoup
+playwright>=1.48.0     # Browser automation für JS-gerenderte Seiten

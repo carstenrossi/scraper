@@ -572,8 +572,8 @@ def crawl(start_url: str, max_pages: int = 50, max_depth: int = None, path_prefi
         visited.add(url)
         
         depth_info = f" (Level {depth})" if max_depth is not None else ""
-        if verbose:
-            print(f"[{len(pages) + 1}/{max_pages}] 📡 {url}{depth_info}")
+        # Fortschritt immer anzeigen
+        print(f"[{len(pages) + 1}/{max_pages}] 📡 {url}{depth_info}")
         
         title, content, links, success = scrape_page(url, referer=referer, path_prefix=path_prefix, force_browser=force_browser, expand_tabs=expand_tabs, verbose=verbose)
         
@@ -593,13 +593,14 @@ def crawl(start_url: str, max_pages: int = 50, max_depth: int = None, path_prefi
                         to_visit.append((normalized, depth + 1, url))
                         all_links.append(link)
             
+            # Details nur mit verbose
             if verbose:
                 print(f"  ✅ {len(content)} Zeichen, {len(links)} Links")
         elif verbose:
             print(f"  ⏭️  Übersprungen (kein Inhalt)")
     
-    if verbose:
-        print(f"\n📊 Fertig: {len(pages)} Seiten gecrawlt")
+    # Zusammenfassung immer anzeigen
+    print(f"\n📊 Fertig: {len(pages)} Seiten gecrawlt")
     
     return pages, all_links
 
@@ -726,9 +727,9 @@ Beispiele:
             
         else:
             # Nur einzelne Seite
-            if args.verbose:
-                tabs_info = " (mit Tab-Expansion)" if args.expand_tabs else ""
-                print(f"📡 Lade: {args.url}{tabs_info}")
+            # Fortschritt immer anzeigen
+            tabs_info = " (mit Tab-Expansion)" if args.expand_tabs else ""
+            print(f"📡 Lade: {args.url}{tabs_info}")
             
             title, content, links, success = scrape_page(
                 args.url,
@@ -741,10 +742,10 @@ Beispiele:
                 print("❌ Seite konnte nicht geladen werden!")
                 sys.exit(1)
             
-            if args.verbose:
-                print(f"📝 Titel: {title}")
-                print(f"📄 {len(content)} Zeichen extrahiert")
-                print(f"🔗 {len(links)} interne Links gefunden")
+            # Zusammenfassung immer anzeigen
+            print(f"📝 Titel: {title}")
+            print(f"📄 {len(content)} Zeichen extrahiert")
+            print(f"🔗 {len(links)} interne Links gefunden")
             
             # Einfaches Markdown für einzelne Seite
             now = datetime.now().strftime("%Y-%m-%d %H:%M")

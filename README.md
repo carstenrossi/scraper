@@ -48,6 +48,19 @@ cd /path/to/scraper
 source venv/bin/activate
 ```
 
+### Interaktiver Modus (empfohlen für Einsteiger)
+
+```bash
+python run.py
+```
+
+Fragt alle Optionen Schritt für Schritt ab:
+- URL
+- Modus (Einzelseite / Crawl)
+- Anzahl Seiten, Tiefe, Prefix
+- Ausgabeformat
+- Erweiterte Optionen
+
 ### Einzelne Seite scrapen
 
 ```bash
@@ -177,7 +190,8 @@ scraper/
 ├── scraper_results/   # Ausgabe-Ordner für Markdown-Dateien
 │   ├── example_com_2026-01-08_14-00-24.md
 │   └── example_com_crawl_2026-01-08_14-00-37.md
-├── scraper.py         # Haupt-Skript
+├── scraper.py         # Haupt-Skript (CLI)
+├── run.py             # Interaktives Startscript
 ├── requirements.txt   # Python Dependencies
 ├── .gitignore
 └── README.md
